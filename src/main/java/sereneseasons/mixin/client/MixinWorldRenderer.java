@@ -44,7 +44,7 @@ public abstract class MixinWorldRenderer implements IResourceManagerReloadListen
 
         if (SeasonsConfig.isDimensionWhitelisted(world.dimension()) && BiomeConfig.enablesSeasonalEffects(biomeKey) && (rainType == Biome.RainType.RAIN || rainType == Biome.RainType.NONE))
         {
-            if (SeasonHooks.shouldRainInBiomeInSeason(world, biomeKey))
+            if (SeasonHooks.shouldRainInBiomeInSeason(world, biomeKey, biome))
                 return Biome.RainType.RAIN;
             else
                 return Biome.RainType.NONE;

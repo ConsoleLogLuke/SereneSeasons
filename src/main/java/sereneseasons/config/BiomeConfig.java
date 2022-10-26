@@ -49,8 +49,12 @@ public class BiomeConfig
 
     public static boolean enablesSeasonalEffects(RegistryKey<Biome> biome)
     {
-        ResourceLocation name = biome.location();
+        if (biome == null)
+        {
+            return true;
+        }
 
+        ResourceLocation name = biome.location();
         if (biomeDataMap.containsKey(name))
         {
             return biomeDataMap.get(name).enableSeasonalEffects;
@@ -59,17 +63,33 @@ public class BiomeConfig
         return true;
     }
 
-    public static boolean usesTropicalSeasons(RegistryKey<Biome> key)
+    public static boolean usesTropicalSeasons(RegistryKey<Biome> key, Biome biome)
     {
-        ResourceLocation name = key.location();
-        Biome biome = BiomeUtil.getBiome(key);
-
-        if (biomeDataMap.containsKey(name))
+        if (key == null && biome == null)
         {
-            return biomeDataMap.get(name).useTropicalSeasons;
+            throw new RuntimeException("Failed to check if a biome uses tropical seasons!");
         }
 
-        return biome.getBaseTemperature() > 0.8F;
+        if (key != null)
+        {
+            ResourceLocation name = key.location();
+            if (biomeDataMap.containsKey(name))
+            {
+                return biomeDataMap.get(name).useTropicalSeasons;
+            }
+        }
+
+        Biome realBiome = biome;
+        if (realBiome == null)
+        {
+            realBiome = BiomeUtil.getBiome(key);
+        }
+        return realBiome.getBaseTemperature() > 0.8F;
+    }
+
+    public static boolean usesTropicalSeasons(RegistryKey<Biome> key)
+    {
+        return usesTropicalSeasons(key, null);
     }
 
     public static boolean infertileBiome(RegistryKey<Biome> biome)
@@ -88,12 +108,16 @@ public class BiomeConfig
 
     public static boolean lessColorChange(RegistryKey<Biome> biome)
     {
+        if (biome == null)
+        {
+            return false;
+        }
+
         List<String> lessColorChangeBiomes = Lists.newArrayList("minecraft:swamp", "minecraft:swamp_hills",
                 "biomesoplenty:mystic_grove", "biomesoplenty:mystic_plains", "biomesoplenty:tundra", "biomesoplenty:tundra_basin", "biomesoplenty:tundra_bog",
                 "biomesoplenty:ominous_woods", "biomesoplenty:ominous_mire");
 
         String name = biome.location().toString();
-
         if (lessColorChangeBiomes.contains(name))
         {
             return true;

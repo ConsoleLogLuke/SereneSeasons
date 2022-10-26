@@ -121,7 +121,7 @@ public class BiomeUtil
     @OnlyIn(Dist.CLIENT)
     private static RegistryKey<Biome> getClientKey(Biome biome)
     {
-        return getClientBiomeRegistry().getResourceKey(biome).orElseThrow(() -> new RuntimeException("Failed to get client registry key for biome!"));
+        return getClientBiomeRegistry().getResourceKey(biome).orElse(null);
     }
 
     @OnlyIn(Dist.CLIENT)

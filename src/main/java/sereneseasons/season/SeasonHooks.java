@@ -93,11 +93,14 @@ public class SeasonHooks
         return biomeTemp;
     }
 
-    public static boolean shouldRainInBiomeInSeason(World world, RegistryKey<Biome> biomeKey)
+    public static boolean shouldRainInBiomeInSeason(World world, RegistryKey<Biome> biomeKey, Biome biome)
     {
-        Biome biome = BiomeUtil.getBiome(biomeKey);
+        if (biomeKey == null && biome == null)
+        {
+            throw new RuntimeException("Failed to check if rain should occur in a biome!");
+        }
 
-        if (BiomeConfig.usesTropicalSeasons(biomeKey))
+        if (BiomeConfig.usesTropicalSeasons(biomeKey, biome))
         {
             Season.TropicalSeason tropicalSeason = SeasonHelper.getSeasonState(world).getTropicalSeason();
 
@@ -111,6 +114,16 @@ public class SeasonHooks
             }
         }
 
-        return biome.getPrecipitation() == Biome.RainType.RAIN;
+        Biome realBiome = biome;
+        if (realBiome == null)
+        {
+            realBiome = BiomeUtil.getBiome(biomeKey);
+        }
+        return realBiome.getPrecipitation() == Biome.RainType.RAIN;
+    }
+
+    public static boolean shouldRainInBiomeInSeason(World world, RegistryKey<Biome> biomeKey)
+    {
+        return shouldRainInBiomeInSeason(world, biomeKey, null);
     }
 }

@@ -62,7 +62,7 @@ public class ModHandlers
         {
             RegistryKey<Biome> biomeKey = BiomeUtil.getBiomeKey(biome);
             SeasonTime calendar = SeasonHandler.getClientSeasonTime();
-            ISeasonColorProvider colorProvider = BiomeConfig.usesTropicalSeasons(biomeKey) ? calendar.getTropicalSeason() : calendar.getSubSeason();
+            ISeasonColorProvider colorProvider = BiomeConfig.usesTropicalSeasons(biomeKey, biome) ? calendar.getTropicalSeason() : calendar.getSubSeason();
 
             return SeasonColorUtil.applySeasonalGrassColouring(colorProvider, biomeKey, originalGrassColorResolver.getColor(biome, x, z));
         };
@@ -71,7 +71,7 @@ public class ModHandlers
         {
             RegistryKey<Biome> biomeKey = BiomeUtil.getBiomeKey(biome);
             SeasonTime calendar = SeasonHandler.getClientSeasonTime();
-            ISeasonColorProvider colorProvider = BiomeConfig.usesTropicalSeasons(biomeKey) ? calendar.getTropicalSeason() : calendar.getSubSeason();
+            ISeasonColorProvider colorProvider = BiomeConfig.usesTropicalSeasons(biomeKey, biome) ? calendar.getTropicalSeason() : calendar.getSubSeason();
 
             return SeasonColorUtil.applySeasonalFoliageColouring(colorProvider, biomeKey, originalFoliageColorResolver.getColor(biome, x, z));
         };
